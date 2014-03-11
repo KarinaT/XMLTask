@@ -307,7 +307,7 @@ public class ThirdPartyServiceHelper {
 		return request;
 	}
 
-		// in progress
+// in progress
 		public List<String> getPdpURL(String currentURL) throws IOException,
 				Exception {
 			String requestURL = getServiceUrl(currentURL);
@@ -326,7 +326,9 @@ public class ThirdPartyServiceHelper {
 				        Node attribute = attributes.item(i);
 				        if(attribute.getNodeValue().equals("pdp-url")){
 				        System.out.println(attribute.getNodeName() + "=>" + attribute.getNodeValue());
-				        pdpLinks.add(attribute.getParentNode().getNodeValue());
+				        String nodeValue = attribute.getParentNode().getNodeValue();
+				        if(nodeValue != null)
+				        pdpLinks.add(nodeValue);
 				        break;
 				        }
 				      }
@@ -336,6 +338,7 @@ public class ThirdPartyServiceHelper {
 			}
 			return pdpLinks;
 		}
+		
 
 	
 	private static String getTagValue(NodeList list, String name) {
