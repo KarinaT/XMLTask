@@ -306,8 +306,16 @@ public class ThirdPartyServiceHelper {
 		System.out.println("Request for S&P to find compare button" + request);
 		return request;
 	}
-
-// in progress
+	// in progress
+	// xml
+	// http://cantire-dev.guided.ss-omtrdc.net/?q=Injector;q1=5;rank=rank_sc;site=kiosk;x1=ratings_range;site=kiosk
+	/*
+	<field name="pdp-url">
+	<![CDATA[
+	/en/pdp/automotive/oils-fluids/cleaners-degreasers/stp-fuel-injector-carburetor-cleaner-0380758p
+	]]>
+	</field>
+	*/
 		public List<String> getPdpURL(String currentURL) throws IOException,
 				Exception {
 			String requestURL = getServiceUrl(currentURL);
@@ -326,7 +334,7 @@ public class ThirdPartyServiceHelper {
 				        Node attribute = attributes.item(i);
 				        if(attribute.getNodeValue().equals("pdp-url")){
 				        System.out.println(attribute.getNodeName() + "=>" + attribute.getNodeValue());
-				        String nodeValue = attribute.getParentNode().getNodeValue();
+				        String nodeValue = nNode.getNodeValue();
 				        if(nodeValue != null)
 				        pdpLinks.add(nodeValue);
 				        break;
@@ -338,7 +346,6 @@ public class ThirdPartyServiceHelper {
 			}
 			return pdpLinks;
 		}
-		
 
 	
 	private static String getTagValue(NodeList list, String name) {
