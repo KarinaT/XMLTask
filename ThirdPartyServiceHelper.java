@@ -307,30 +307,35 @@ public class ThirdPartyServiceHelper {
 		return request;
 	}
 
-	// in progress
-	public List<String> getPdpURL(String currentURL) throws IOException,
-			Exception {
-		String requestURL = getServiceUrl(currentURL);
-		List<String> pdpLinks = new ArrayList<String>();
+		// in progress
+		public List<String> getPdpURL(String currentURL) throws IOException,
+				Exception {
+			String requestURL = getServiceUrl(currentURL);
+			List<String> pdpLinks = new ArrayList<String>();
 
-		URL link = new URL(requestURL);
-		URLConnection connection = link.openConnection();
-		try {
-			Document document = parseXMLByUrl(connection.getInputStream());
-			for (int temp = 0; temp < document.getElementsByTagName("field")
-					.getLength(); temp++) {
-				/*String links = document.getElementsByTagName("field")
-						.item(temp).getNodeValue();*/
-				NodeList fields = document.getElementsByTagName("field");
-				String links = getTagValue(fields, "pdp-url");
-				pdpLinks.add(links);
-				System.out.println("pdpLinks == >" + pdpLinks);
+			URL link = new URL(requestURL);
+			URLConnection connection = link.openConnection();
+			
+				Document document = parseXMLByUrl(connection.getInputStream());
+				NodeList nList = document.getElementsByTagName("field");
+				for (int temp = 0; temp < nList.getLength(); temp++) {
+					Node nNode = nList.item(temp);
+					NamedNodeMap attributes = nNode.getAttributes();
+					
+				      for (int i = 0; i < attributes.getLength(); i++) {
+				        Node attribute = attributes.item(i);
+				        if(attribute.getNodeValue().equals("pdp-url")){
+				        System.out.println(attribute.getNodeName() + "=>" + attribute.getNodeValue());
+				        pdpLinks.add(attribute.getParentNode().getNodeValue());
+				        break;
+				        }
+				      }
+				      //System.out.println("Node value is: " + nNode.getNodeValue());
+				      //System.out.println("pdpLinks == >" + pdpLinks.get(temp));
+				
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			return pdpLinks;
 		}
-		return pdpLinks;
-	}
 
 	
 	private static String getTagValue(NodeList list, String name) {
